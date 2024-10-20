@@ -7,15 +7,6 @@ class EvaluationError(Exception):
     """Custom exception for evaluation errors."""
     pass
 
-# def create_rule(rule_string: str) -> Optional[Node]:
-#     tokens = tokenize(rule_string)
-#     print(f"Tokens generated: {tokens}")
-#     parser = Parser(tokens)
-#     try:
-#         ast = parser.parse()
-#         return ast
-#     except (ParseError, TokenizationError) as e:
-#         raise ParseError(f"Error parsing rule: {e}")
 
 def create_rule(rule_string: str) -> Optional[Node]:
     print(f"Creating rule with string: {rule_string}")  # Debugging line
@@ -26,7 +17,6 @@ def create_rule(rule_string: str) -> Optional[Node]:
     
     try:
         tokens = tokenize(rule_string)
-        print(f"Tokens: {tokens}")  # Debugging line
         
         parser = Parser(tokens)
         ast = parser.parse()
@@ -34,11 +24,9 @@ def create_rule(rule_string: str) -> Optional[Node]:
         if ast is None:
             raise ParseError("AST generation failed; rule string might be invalid.")
         
-        print(f"Generated AST: {ast}")  # Debugging line
         return ast
     
     except (ParseError, TokenizationError) as e:
-        print(f"Error parsing rule: {e}")  # Debugging line
         raise ParseError(f"Error parsing rule: {e}")
 
 
@@ -48,7 +36,6 @@ def combine_rules(rule_strings: List[str], operator: str = 'OR') -> Optional[Nod
     
     # Create ASTs from rule strings
     asts = [create_rule(rs) for rs in rule_strings]
-    print(f"Generated ASTs: {asts}")  # Debugging line
     
     if not asts:
         return None
@@ -58,7 +45,6 @@ def combine_rules(rule_strings: List[str], operator: str = 'OR') -> Optional[Nod
     for ast in asts[1:]:
         combined_ast = Node('operator', value=operator, left=combined_ast, right=ast)
     
-    print(f"Combined AST: {combined_ast}")  # Debugging line
     return combined_ast
 
 

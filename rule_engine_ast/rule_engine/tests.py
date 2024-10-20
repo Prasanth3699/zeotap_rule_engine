@@ -54,7 +54,7 @@ class RuleAPITestCase(TestCase):
         url = reverse('rules_list_create')
         response = self.client.get(url, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data['results']), 2)  # Adjust based on pagination
+        self.assertEqual(len(response.data['results']), 2)  
 
     def test_update_rule(self):
         url = reverse('rule_detail', args=[self.rule1.id])
@@ -76,9 +76,12 @@ class RuleAPITestCase(TestCase):
         url = reverse('combine_rules')
         data = {
             "rule_ids": [self.rule1.id, self.rule2.id],
-            "operator": "OR"
+            "operator": "OR" ,
+             "name": "Combined Rule Test"
         }
         response = self.client.post(url, data, format='json')
+        if response.status_code != status.HTTP_200_OK:
+            print("Response data:", response.data)  # Add this line to debug
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn('combined_ast', response.data)
 
